@@ -51,6 +51,7 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
 </head>
 <body>
 
@@ -59,6 +60,12 @@
     <button type="button" id="enter-btn">Enter</button>
     <script>
         $(document).ready(function() {
+          $.getJSON("/get_toggle_states", function(data) {
+            $("#shift-status").text(data.Shift ? "ON" : "OFF");
+            $("#control-status").text(data.Control ? "ON" : "OFF");
+            $("#alt-status").text(data.Alt ? "ON" : "OFF");
+          });
+
           $("#enter-btn").click(function() {
             $.ajax({
               url: "/press_key",
@@ -152,28 +159,33 @@
 
     <!-- Toggleable keys: Shift, Control, Alt -->
     <button type="button" id="shift-btn">
-        Shift <span id="shift-status" style="color: white;">OFF</span>
-      </button>
+      Shift <span id="shift-status" style="color: white;">OFF</span>
+    </button>
     
     <script>
         $(document).ready(function() {
-        $("#shift-btn").click(function() {
-            let key = "Shift";
-            let scurrentStatus = $("#shift-status").text();
-            let snewStatus = scurrentStatus === "OFF" ? "ON" : "OFF";
-    
-            $.ajax({
-            url: "/press_key",
-            method: "POST",
-            data: { key: key },
-            success: function(response) {
-                $("#shift-status").text(snewStatus); // Update button text
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-            }
-            });
-        });
+          $.getJSON("/get_toggle_states", function(data) {
+            $("#shift-status").text(data.Shift ? "ON" : "OFF");
+            $("#control-status").text(data.Control ? "ON" : "OFF");
+            $("#alt-status").text(data.Alt ? "ON" : "OFF");
+          });
+          $("#shift-btn").click(function() {
+              let key = "Shift";
+              let scurrentStatus = $("#shift-status").text();
+              let snewStatus = scurrentStatus === "OFF" ? "ON" : "OFF";
+      
+              $.ajax({
+              url: "/press_key",
+              method: "POST",
+              data: { key: key },
+              success: function(response) {
+                  $("#shift-status").text(snewStatus); // Update button text
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  console.error("Error sending request:", textStatus, errorThrown);
+              }
+              });
+          });
         });
     </script>
 
@@ -183,23 +195,28 @@
     
     <script>
         $(document).ready(function() {
-        $("#control-btn").click(function() {
-            let key = "Control";
-            let ccurrentStatus = $("#control-status").text();
-            let cnewStatus = ccurrentStatus === "OFF" ? "ON" : "OFF";
-    
-            $.ajax({
-            url: "/press_key",
-            method: "POST",
-            data: { key: key },
-            success: function(response) {
-                $("#control-status").text(cnewStatus); // Update button text
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-            }
-            });
-        });
+          $.getJSON("/get_toggle_states", function(data) {
+            $("#shift-status").text(data.Shift ? "ON" : "OFF");
+            $("#control-status").text(data.Control ? "ON" : "OFF");
+            $("#alt-status").text(data.Alt ? "ON" : "OFF");
+          });
+          $("#control-btn").click(function() {
+              let key = "Control";
+              let ccurrentStatus = $("#control-status").text();
+              let cnewStatus = ccurrentStatus === "OFF" ? "ON" : "OFF";
+      
+              $.ajax({
+              url: "/press_key",
+              method: "POST",
+              data: { key: key },
+              success: function(response) {
+                  $("#control-status").text(cnewStatus); // Update button text
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  console.error("Error sending request:", textStatus, errorThrown);
+              }
+              });
+          });
         });
     </script>
 
@@ -211,23 +228,28 @@
     
     <script>
         $(document).ready(function() {
-        $("#alt-btn").click(function() {
-            let key = "Alt";
-            let acurrentStatus = $("#alt-status").text();
-            let anewStatus = acurrentStatus === "OFF" ? "ON" : "OFF";
-    
-            $.ajax({
-            url: "/press_key",
-            method: "POST",
-            data: { key: key },
-            success: function(response) {
-                $("#alt-status").text(anewStatus); // Update button text
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-            }
-            });
-        });
+          $.getJSON("/get_toggle_states", function(data) {
+            $("#shift-status").text(data.Shift ? "ON" : "OFF");
+            $("#control-status").text(data.Control ? "ON" : "OFF");
+            $("#alt-status").text(data.Alt ? "ON" : "OFF");
+          });
+          $("#alt-btn").click(function() {
+              let key = "Alt";
+              let acurrentStatus = $("#alt-status").text();
+              let anewStatus = acurrentStatus === "OFF" ? "ON" : "OFF";
+      
+              $.ajax({
+              url: "/press_key",
+              method: "POST",
+              data: { key: key },
+              success: function(response) {
+                  $("#alt-status").text(anewStatus); // Update button text
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  console.error("Error sending request:", textStatus, errorThrown);
+              }
+              });
+          });
         });
     </script>
 
@@ -440,7 +462,24 @@
 
     <br><br>
     
-    <button type="submit" name="key" value="Off">⚠️Off⚠️</button>
+    <button type="button" id="off-btn">⚠️Off⚠️</button>
+    <script>
+        $(document).ready(function() {
+          $("#off-btn").click(function() {
+            $.ajax({
+              url: "/press_key",
+              method: "POST",
+              data: { key: "Off" }, // Send key value as data
+              success: function(response) {
+                // Handle successful response (optional)
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Error sending request:", textStatus, errorThrown);
+              }
+            });
+          });
+        });
+    </script>
 </form>
 
 

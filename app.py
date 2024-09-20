@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import pyautogui
 import keyboard
 import screen_brightness_control as sbc
@@ -27,10 +27,10 @@ def press_key():
 
     if key == 'Off':
         keyboard.press_and_release('win+r')
-        # time.sleep(0.5)  # Wait for the Run dialog to appear
-        # keyboard.write('shutdown /h')
-        # keyboard.press_and_release('enter')
-        # return redirect(url_for('home'))
+        time.sleep(0.5)  # Wait for the Run dialog to appear
+        keyboard.write('shutdown /h')
+        keyboard.press_and_release('enter')
+        return redirect(url_for('home'))
 
     # Handle toggleable keys (Shift, Control, Escape)
     if key in toggle_keys:
@@ -44,6 +44,10 @@ def press_key():
         keyboard.press_and_release(key.lower())
     
     return redirect(url_for('home'))
+
+@app.route('/get_toggle_states', methods=['GET'])
+def get_toggle_states():
+    return jsonify(toggle_keys)
 
 # Media Controls
 @app.route('/play_pause', methods=['POST'])
