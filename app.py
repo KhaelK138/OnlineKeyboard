@@ -7,6 +7,7 @@ import time
 app = Flask(__name__)
 
 brightness = sbc.get_brightness()
+pyautogui.FAILSAFE = False
 
 
 # Dictionary to keep track of which keys are toggled (held down)
@@ -19,6 +20,33 @@ toggle_keys = {
 @app.route('/')
 def home():
     return render_template('index.html', toggle_keys=toggle_keys)
+
+@app.route('/move_mouse', methods=['POST'])
+def move_mouse():
+    data = request.json
+    print(data)
+    dx = data['dx']
+    dy = data['dy']
+    
+    # Scale the movement (adjust these values as needed)
+    scale_factor = 0.5
+    dx_scaled = int(dx * scale_factor)
+    dy_scaled = int(dy * scale_factor)
+    
+    # Move the mouse relative to its current position
+    pyautogui.moveRel(dx_scaled, dy_scaled)
+    
+    return jsonify({"status": "success"})
+
+@app.route('/click_mouse', methods=['POST'])
+def click_mouse():
+    data = request.json
+    action = data['action']
+    
+    if action == 'click':
+        pyautogui.click()
+    
+    return jsonify({"status": "success"})
 
 # Route to handle key press events
 @app.route('/press_key', methods=['POST'])

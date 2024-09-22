@@ -35,12 +35,12 @@
             flex-grow: 1; /* Make each button take equal space */
         }
         .emoji-button {
-            width: 60px;           /* Fixed width for square buttons */
-            height: 60px;          /* Fixed height to make it square */
+            width: 50px;           /* Fixed width for square buttons */
+            height: 50px;          /* Fixed height to make it square */
             display: inline-flex;   /* Flexbox to center emoji */
             align-items: center;    /* Center emoji vertically */
             justify-content: center;/* Center emoji horizontally */
-            font-size: 30px;        /* Larger font size for the emoji */
+            font-size: 25px;        /* Larger font size for the emoji */
             padding: 0;            /* No padding needed for emoji button */
         }
         .text-button {
@@ -52,7 +52,7 @@
             color: #F0EDEE; /* Off-white text */
         }
         .keyboard-input {
-            margin-top: 20px;
+            margin-top: 10px;
         }
         .keyboard-input input {
             width: 80%;
@@ -72,465 +72,595 @@
         input[type="text"]::placeholder {
             color: #F0EDEE; /* Off-white placeholder text */
         }
+        #touchpad {
+            width: 100vw - 20px;  /* Full viewport width */
+            height: 46vw;  /* 16:9 aspect ratio */
+            max-height: 80vh;  /* Limit height to 80% of viewport height */
+            border: 2px solid #ffffff;
+            border-radius: 15px;
+            background-color: #2c2c2c;  /* Slightly lighter than the background */
+            touch-action: none;
+            user-select: none;
+            position: relative;
+            box-sizing: border-box;  /* Include border in width/height calculations */
+            margin-top: 5px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       
 </head>
 <body>
 
-    <!-- Main control buttons form -->
-<form action="/press_key" method="POST">
-    <div class="tap-buttons-container">
-      <button type="button" id="enter-btn">Enter</button>
-      <script>
-          $(document).ready(function() {
-            $.getJSON("/get_toggle_states", function(data) {
-              $("#shift-status").text(data.Shift ? "ON" : "OFF");
-              $("#control-status").text(data.Control ? "ON" : "OFF");
-              $("#alt-status").text(data.Alt ? "ON" : "OFF");
-            });
+<!-- Main control buttons form -->
+<div class="tap-buttons-container">
+  <button type="button" id="enter-btn">Enter</button>
+  <script>
+      $(document).ready(function() {
+        $.getJSON("/get_toggle_states", function(data) {
+          $("#shift-status").text(data.Shift ? "ON" : "OFF");
+          $("#control-status").text(data.Control ? "ON" : "OFF");
+          $("#alt-status").text(data.Alt ? "ON" : "OFF");
+        });
 
-            $("#enter-btn").click(function() {
-              $.ajax({
-                url: "/press_key",
-                method: "POST",
-                data: { key: "enter" }, // Send key value as data
-                success: function(response) {
-                  // Handle successful response (optional)
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-                }
-              });
-            });
-          });
-      </script>
-      <button type="button" id="tab-btn">Tab</button>
-      <script>
-          $(document).ready(function() {
-            $("#tab-btn").click(function() {
-              $.ajax({
-                url: "/press_key",
-                method: "POST",
-                data: { key: "tab" }, // Send key value as data
-                success: function(response) {
-                  // Handle successful response (optional)
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-                }
-              });
-            });
-          });
-      </script>
-      <button type="button" id="backspace-btn">Backspace</button>
-      <script>
-          $(document).ready(function() {
-            $("#backspace-btn").click(function() {
-              $.ajax({
-                url: "/press_key",
-                method: "POST",
-                data: { key: "backspace" }, // Send key value as data
-                success: function(response) {
-                  // Handle successful response (optional)
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-                }
-              });
-            });
-          });
-      </script>
-      
-      <button type="button" id="win-btn">Win</button>
-      <script>
-          $(document).ready(function() {
-            $("#win-btn").click(function() {
-              $.ajax({
-                url: "/press_key",
-                method: "POST",
-                data: { key: "win" }, // Send key value as data
-                success: function(response) {
-                  // Handle successful response (optional)
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-                }
-              });
-            });
-          });
-      </script>
-      <button type="button" id="Escape-btn">Escape</button>
-      <script>
-          $(document).ready(function() {
-            $("#Escape-btn").click(function() {
-              $.ajax({
-                url: "/press_key",
-                method: "POST",
-                data: { key: "Escape" }, // Send key value as data
-                success: function(response) {
-                  // Handle successful response (optional)
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-                }
-              });
-            });
-          });
-      </script>
-    </div>
-
-    <!-- Toggleable keys: Shift, Control, Alt -->
-    <button type="button" id="shift-btn">
-      Shift <span id="shift-status" style="color: white;">OFF</span>
-    </button>
-    
-    <script>
-        $(document).ready(function() {
-          $.getJSON("/get_toggle_states", function(data) {
-            let shiftStatus = data.Shift ? "ON" : "OFF";
-            $("#shift-status").text(shiftStatus);
-            if (shiftStatus === "ON") {
-                $("#shift-status").css("color", "red");
-            } else {
-                $("#shift-status").css("color", "white");
+        $("#enter-btn").click(function() {
+          $.ajax({
+            url: "/press_key",
+            method: "POST",
+            data: { key: "enter" }, // Send key value as data
+            success: function(response) {
+              // Handle successful response (optional)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
             }
           });
-          $("#shift-btn").click(function() {
-              let key = "Shift";
-              let scurrentStatus = $("#shift-status").text();
-              let snewStatus = scurrentStatus === "OFF" ? "ON" : "OFF";
-      
-              $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: key },
-              success: function(response) {
-                  $("#shift-status").text(snewStatus); // Update button text
-                  if (snewStatus === "ON") {
-                      $("#shift-status").css("color", "red");
-                  } else {
-                      $("#shift-status").css("color", "white");
-                  }
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-              }
-              });
-          });
         });
-    </script>
-
-    <button type="button" id="control-btn">
-        Control <span id="control-status" style="color: white;">OFF</span>
-    </button>
-    
-    <script>
-        $(document).ready(function() {
-          $.getJSON("/get_toggle_states", function(data) {
-            let controlStatus = data.Control ? "ON" : "OFF";
-            $("#control-status").text(controlStatus);
-            if (controlStatus === "ON") {
-                $("#control-status").css("color", "red");
-            } else {
-                $("#control-status").css("color", "white");
+      });
+  </script>
+  <button type="button" id="tab-btn">Tab</button>
+  <script>
+      $(document).ready(function() {
+        $("#tab-btn").click(function() {
+          $.ajax({
+            url: "/press_key",
+            method: "POST",
+            data: { key: "tab" }, // Send key value as data
+            success: function(response) {
+              // Handle successful response (optional)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
             }
           });
-          $("#control-btn").click(function() {
-              let key = "Control";
-              let ccurrentStatus = $("#control-status").text();
-              let cnewStatus = ccurrentStatus === "OFF" ? "ON" : "OFF";
-      
-              $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: key },
-              success: function(response) {
-                  $("#control-status").text(cnewStatus); // Update button text
-                  if (cnewStatus === "ON") {
-                      $("#control-status").css("color", "red");
-                  } else {
-                      $("#control-status").css("color", "white");
-                  }
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-              }
-              });
-          });
         });
-    </script>
-
-
-    
-    <button type="button" id="alt-btn">
-        Alt <span id="alt-status" style="color: white;">OFF</span>
-    </button>
-    
-    <script>
-        $(document).ready(function() {
-          $.getJSON("/get_toggle_states", function(data) {
-            let altStatus = data.Alt ? "ON" : "OFF";
-            $("#alt-status").text(altStatus);
-            if (altStatus === "ON") {
-                $("#alt-status").css("color", "red");
-            } else {
-                $("#alt-status").css("color", "white");
+      });
+  </script>
+  <button type="button" id="backspace-btn">Backspace</button>
+  <script>
+      $(document).ready(function() {
+        $("#backspace-btn").click(function() {
+          $.ajax({
+            url: "/press_key",
+            method: "POST",
+            data: { key: "backspace" }, // Send key value as data
+            success: function(response) {
+              // Handle successful response (optional)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
             }
           });
-          $("#alt-btn").click(function() {
-              let key = "Alt";
-              let acurrentStatus = $("#alt-status").text();
-              let anewStatus = acurrentStatus === "OFF" ? "ON" : "OFF";
-      
-              $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: key },
-              success: function(response) {
-                  $("#alt-status").text(anewStatus); // Update button text
-                  if (anewStatus === "ON") {
-                      $("#alt-status").css("color", "red");
-                  } else {
-                      $("#alt-status").css("color", "white");
-                  }
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                  console.error("Error sending request:", textStatus, errorThrown);
-              }
-              });
+        });
+      });
+  </script>
+  
+  <button type="button" id="win-btn">Win</button>
+  <script>
+      $(document).ready(function() {
+        $("#win-btn").click(function() {
+          $.ajax({
+            url: "/press_key",
+            method: "POST",
+            data: { key: "win" }, // Send key value as data
+            success: function(response) {
+              // Handle successful response (optional)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
+            }
           });
         });
-    </script>
+      });
+  </script>
+  <button type="button" id="Escape-btn">Escape</button>
+  <script>
+      $(document).ready(function() {
+        $("#Escape-btn").click(function() {
+          $.ajax({
+            url: "/press_key",
+            method: "POST",
+            data: { key: "Escape" }, // Send key value as data
+            success: function(response) {
+              // Handle successful response (optional)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
+            }
+          });
+        });
+      });
+  </script>
+</div>
+
+<!-- Toggleable keys: Shift, Control, Alt -->
+<button type="button" id="shift-btn">
+  Shift <span id="shift-status" style="color: white;">OFF</span>
+</button>
+
+<script>
+    $(document).ready(function() {
+      $.getJSON("/get_toggle_states", function(data) {
+        let shiftStatus = data.Shift ? "ON" : "OFF";
+        $("#shift-status").text(shiftStatus);
+        if (shiftStatus === "ON") {
+            $("#shift-status").css("color", "red");
+        } else {
+            $("#shift-status").css("color", "white");
+        }
+      });
+      $("#shift-btn").click(function() {
+          let key = "Shift";
+          let scurrentStatus = $("#shift-status").text();
+          let snewStatus = scurrentStatus === "OFF" ? "ON" : "OFF";
+  
+          $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: key },
+          success: function(response) {
+              $("#shift-status").text(snewStatus); // Update button text
+              if (snewStatus === "ON") {
+                  $("#shift-status").css("color", "red");
+              } else {
+                  $("#shift-status").css("color", "white");
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
+          }
+          });
+      });
+    });
+</script>
+
+<button type="button" id="control-btn">
+    Control <span id="control-status" style="color: white;">OFF</span>
+</button>
+
+<script>
+    $(document).ready(function() {
+      $.getJSON("/get_toggle_states", function(data) {
+        let controlStatus = data.Control ? "ON" : "OFF";
+        $("#control-status").text(controlStatus);
+        if (controlStatus === "ON") {
+            $("#control-status").css("color", "red");
+        } else {
+            $("#control-status").css("color", "white");
+        }
+      });
+      $("#control-btn").click(function() {
+          let key = "Control";
+          let ccurrentStatus = $("#control-status").text();
+          let cnewStatus = ccurrentStatus === "OFF" ? "ON" : "OFF";
+  
+          $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: key },
+          success: function(response) {
+              $("#control-status").text(cnewStatus); // Update button text
+              if (cnewStatus === "ON") {
+                  $("#control-status").css("color", "red");
+              } else {
+                  $("#control-status").css("color", "white");
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
+          }
+          });
+      });
+    });
+</script>
 
 
-</form>
+
+<button type="button" id="alt-btn">
+    Alt <span id="alt-status" style="color: white;">OFF</span>
+</button>
+
+<script>
+    $(document).ready(function() {
+      $.getJSON("/get_toggle_states", function(data) {
+        let altStatus = data.Alt ? "ON" : "OFF";
+        $("#alt-status").text(altStatus);
+        if (altStatus === "ON") {
+            $("#alt-status").css("color", "red");
+        } else {
+            $("#alt-status").css("color", "white");
+        }
+      });
+      $("#alt-btn").click(function() {
+          let key = "Alt";
+          let acurrentStatus = $("#alt-status").text();
+          let anewStatus = acurrentStatus === "OFF" ? "ON" : "OFF";
+  
+          $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: key },
+          success: function(response) {
+              $("#alt-status").text(anewStatus); // Update button text
+              if (anewStatus === "ON") {
+                  $("#alt-status").css("color", "red");
+              } else {
+                  $("#alt-status").css("color", "white");
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.error("Error sending request:", textStatus, errorThrown);
+          }
+          });
+      });
+    });
+</script>
 
 <br>
 
 <!-- Arrow buttons form -->
 
-<form action="/press_key" method="POST">
-    <button class="emoji-button" type="button" id="volume-up-btn">🔊</button>
-    <script>
-        $(document).ready(function() {
-          $("#volume-up-btn").click(function() {
-            $.ajax({
-              url: "/volume_up",
+<button class="emoji-button" type="button" id="volume-up-btn">🔊</button>
+<script>
+    $(document).ready(function() {
+      $("#volume-up-btn").click(function() {
+        $.ajax({
+          url: "/volume_up",
+          method: "POST",
+          data: { key: "volume-up" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+<button class="emoji-button" type="button" id="up-btn">⬆️</button>
+<script>
+    $(document).ready(function() {
+      $("#up-btn").click(function() {
+        $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: "up" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+<button class="emoji-button" type="button" id="volume-down-btn">🔈</button>
+<script>
+    $(document).ready(function() {
+      $("#volume-down-btn").click(function() {
+        $.ajax({
+          url: "/volume_down",
+          method: "POST",
+          data: { key: "volume-down" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+<br>
+<button class="emoji-button" type="button" id="left-btn">⬅️</button>
+<script>
+    $(document).ready(function() {
+      $("#left-btn").click(function() {
+        $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: "left" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+<button class="emoji-button" type="button" id="play-btn">▶️</button>
+<script>
+    $(document).ready(function() {
+      $("#play-btn").click(function() {
+        $.ajax({
+          url: "/play_pause",
+          method: "POST",
+          data: { key: "play" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+<button class="emoji-button" type="button" id="right-btn">➡️</button>
+<script>
+    $(document).ready(function() {
+      $("#right-btn").click(function() {
+        $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: "right" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script><br>
+<button class="emoji-button" type="button" id="brightness-up-btn">🔆</button>
+<script>
+    $(document).ready(function() {
+      $("#brightness-up-btn").click(function() {
+        $.ajax({
+          url: "/brightness_up",
+          method: "POST",
+          data: { key: "brightness-up" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+<button class="emoji-button" type="button" id="down-btn">⬇️</button>
+<script>
+    $(document).ready(function() {
+      $("#down-btn").click(function() {
+        $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: "down" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+<button class="emoji-button" type="button" id="brightness-down-btn">🔅</button>
+<script>
+    $(document).ready(function() {
+      $("#brightness-down-btn").click(function() {
+        $.ajax({
+          url: "/brightness_down",
+          method: "POST",
+          data: { key: "brightness-down" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+</script>
+
+<br>
+
+<div id="touchpad"></div>
+</div>
+
+<script>
+  const touchpad = document.getElementById('touchpad');
+  let isActive = false;
+  let isDragging = false;
+  let startX, startY;
+  let maxRadius;
+  let lastTapTime = 0;
+  const doubleTapDelay = 0; // ms
+  const tapThreshold = 10; // pixels
+
+  function initTouchpad() {
+      const rect = touchpad.getBoundingClientRect();
+      maxRadius = Math.min(rect.width, rect.height) / 2;
+  }
+
+  function calculateMovement(clientX, clientY) {
+      const rect = touchpad.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      let dx = x - startX;
+      let dy = y - startY;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance > maxRadius) {
+          const angle = Math.atan2(dy, dx);
+          dx = Math.cos(angle) * maxRadius;
+          dy = Math.sin(angle) * maxRadius;
+      }
+
+      return { dx, dy };
+  }
+
+  function updatePosition(clientX, clientY) {
+      if (!isActive) return;
+
+      const { dx, dy } = calculateMovement(clientX, clientY);
+      sendMouseMovement(dx, dy);
+
+      // Check if the movement is large enough to be considered a drag
+      if (Math.abs(dx) > tapThreshold || Math.abs(dy) > tapThreshold) {
+          isDragging = true;
+      }
+  }
+
+  function sendMouseMovement(dx, dy) {
+      fetch('/move_mouse', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ dx, dy }),
+      });
+  }
+
+  function sendMouseClick() {
+      fetch('/click_mouse', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ action: 'click' }),
+      });
+  }
+
+  function handleStart(clientX, clientY) {
+      isActive = true;
+      isDragging = false;
+      const rect = touchpad.getBoundingClientRect();
+      startX = clientX - rect.left;
+      startY = clientY - rect.top;
+  }
+
+  function handleEnd() {
+      if (isActive && !isDragging) {
+          handleTap();
+      }
+      isActive = false;
+      isDragging = false;
+  }
+
+  function handleTap() {
+      const currentTime = new Date().getTime();
+      if (currentTime - lastTapTime < doubleTapDelay) {
+          // Double tap detected, ignore
+          lastTapTime = 0;
+      } else {
+          sendMouseClick();
+          lastTapTime = currentTime;
+      }
+  }
+
+  // Mouse events
+  touchpad.addEventListener('mousedown', (e) => handleStart(e.clientX, e.clientY));
+  document.addEventListener('mouseup', handleEnd);
+  touchpad.addEventListener('mousemove', (e) => updatePosition(e.clientX, e.clientY));
+
+  // Touch events
+  touchpad.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      handleStart(touch.clientX, touch.clientY);
+  });
+  touchpad.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      handleEnd();
+  });
+  touchpad.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      updatePosition(touch.clientX, touch.clientY);
+  });
+
+  window.addEventListener('load', initTouchpad);
+  window.addEventListener('resize', initTouchpad);
+</script>
+
+
+<!-- Text submission form -->
+<script>
+  $(document).ready(function() {
+      $("#submit-text-btn").click(function() {
+          let textInput = $("#text-input").val(); // Get the text input value
+
+          $.ajax({
+              url: "/submit_text",
               method: "POST",
-              data: { key: "volume-up" }, // Send key value as data
+              data: { text_input: textInput }, // Send the text input
               success: function(response) {
-                // Handle successful response (optional)
               },
               error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
+                  console.error("Error sending request:", textStatus, errorThrown);
+                  $("#submit-status").text("Error submitting text").fadeIn().delay(1000).fadeOut(); // Show error message
               }
-            });
-          });
-        });
-    </script>
-    <button class="emoji-button" type="button" id="up-btn">⬆️</button>
-    <script>
-        $(document).ready(function() {
-          $("#up-btn").click(function() {
-            $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: "up" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script>
-    <button class="emoji-button" type="button" id="volume-down-btn">🔈</button>
-    <script>
-        $(document).ready(function() {
-          $("#volume-down-btn").click(function() {
-            $.ajax({
-              url: "/volume_down",
-              method: "POST",
-              data: { key: "volume-down" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script>
-    <br>
-    <button class="emoji-button" type="button" id="left-btn">⬅️</button>
-    <script>
-        $(document).ready(function() {
-          $("#left-btn").click(function() {
-            $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: "left" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script>
-    <button class="emoji-button" type="button" id="play-btn">▶️</button>
-    <script>
-        $(document).ready(function() {
-          $("#play-btn").click(function() {
-            $.ajax({
-              url: "/play_pause",
-              method: "POST",
-              data: { key: "play" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script>
-    <button class="emoji-button" type="button" id="right-btn">➡️</button>
-    <script>
-        $(document).ready(function() {
-          $("#right-btn").click(function() {
-            $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: "right" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script><br>
-    <button class="emoji-button" type="button" id="brightness-up-btn">🔆</button>
-    <script>
-        $(document).ready(function() {
-          $("#brightness-up-btn").click(function() {
-            $.ajax({
-              url: "/brightness_up",
-              method: "POST",
-              data: { key: "brightness-up" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script>
-    <button class="emoji-button" type="button" id="down-btn">⬇️</button>
-    <script>
-        $(document).ready(function() {
-          $("#down-btn").click(function() {
-            $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: "down" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script>
-    <button class="emoji-button" type="button" id="brightness-down-btn">🔅</button>
-    <script>
-        $(document).ready(function() {
-          $("#brightness-down-btn").click(function() {
-            $.ajax({
-              url: "/brightness_down",
-              method: "POST",
-              data: { key: "brightness-down" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
-        });
-    </script>
-    <br>
-    <!-- Text submission form -->
-    <script>
-      $(document).ready(function() {
-          $("#submit-text-btn").click(function() {
-              let textInput = $("#text-input").val(); // Get the text input value
-    
-              $.ajax({
-                  url: "/submit_text",
-                  method: "POST",
-                  data: { text_input: textInput }, // Send the text input
-                  success: function(response) {
-                  },
-                  error: function(jqXHR, textStatus, errorThrown) {
-                      console.error("Error sending request:", textStatus, errorThrown);
-                      $("#submit-status").text("Error submitting text").fadeIn().delay(1000).fadeOut(); // Show error message
-                  }
-              });
-          });
-    
-          // Clear text input when "Clear Text" button is clicked
-          $("#clear-text-btn").click(function() {
-              $("#text-input").val(""); // Clear the input field
           });
       });
-    </script>
-    
-    <div class="keyboard-input">
-      <input type="text" id="text-input" placeholder="Type here..." autocomplete="off" autocorrect="off" autocapitalize="off">
-      <br>
-      <button class="text-button" type="button" id="submit-text-btn">Submit Text</button>
-      <button class="text-button" type="button" id="clear-text-btn">Clear Text</button>
-      <span id="submit-status" style="color: white;"></span>
-    </div>
-    
 
-    <br><br>
-    
-    <button type="button" id="off-btn">⚠️Off⚠️</button>
-    <script>
-        $(document).ready(function() {
-          $("#off-btn").click(function() {
-            $.ajax({
-              url: "/press_key",
-              method: "POST",
-              data: { key: "Off" }, // Send key value as data
-              success: function(response) {
-                // Handle successful response (optional)
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Error sending request:", textStatus, errorThrown);
-              }
-            });
-          });
+      // Clear text input when "Clear Text" button is clicked
+      $("#clear-text-btn").click(function() {
+          $("#text-input").val(""); // Clear the input field
+      });
+  });
+</script>
+
+<div class="keyboard-input">
+  <input type="text" id="text-input" placeholder="Type here..." autocomplete="off" autocorrect="off" autocapitalize="off">
+  <br>
+  <button class="text-button" type="button" id="submit-text-btn">Submit Text</button>
+  <button class="text-button" type="button" id="clear-text-btn">Clear Text</button>
+  <span id="submit-status" style="color: white;"></span>
+</div>
+
+
+<br><br>
+
+<button type="button" id="off-btn">⚠️Off⚠️</button>
+<script>
+    $(document).ready(function() {
+      $("#off-btn").click(function() {
+        $.ajax({
+          url: "/press_key",
+          method: "POST",
+          data: { key: "Off" }, // Send key value as data
+          success: function(response) {
+            // Handle successful response (optional)
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error sending request:", textStatus, errorThrown);
+          }
         });
-    </script>
-</form>
+      });
+    });
+</script>
 
 
 
