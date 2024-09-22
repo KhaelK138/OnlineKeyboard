@@ -22,6 +22,14 @@
             margin-top: 5px;
             background-color: #1E3A8A; /* Dark blue background */
             color: #F0EDEE; /* Off-white text */
+            cursor: pointer;
+            transition: all 0.02s ease; /* Smooth transition for press effect */
+        }
+
+        button:active {
+            background-color: #374151; /* Darker background when active */
+            transform: translateY(1px); /* Make it look pressed by moving down */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset; /* Inset shadow for a pressed effect */
         }
         .tap-buttons-container button {
             flex-grow: 1; /* Make each button take equal space */
@@ -34,7 +42,6 @@
             justify-content: center;/* Center emoji horizontally */
             font-size: 30px;        /* Larger font size for the emoji */
             padding: 0;            /* No padding needed for emoji button */
-            margin: 5px;
         }
         .text-button {
             width: 120px;
