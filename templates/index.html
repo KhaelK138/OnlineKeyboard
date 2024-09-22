@@ -188,9 +188,13 @@
     <script>
         $(document).ready(function() {
           $.getJSON("/get_toggle_states", function(data) {
-            $("#shift-status").text(data.Shift ? "ON" : "OFF");
-            $("#control-status").text(data.Control ? "ON" : "OFF");
-            $("#alt-status").text(data.Alt ? "ON" : "OFF");
+            let shiftStatus = data.Shift ? "ON" : "OFF";
+            $("#shift-status").text(shiftStatus);
+            if (shiftStatus === "ON") {
+                $("#shift-status").css("color", "red");
+            } else {
+                $("#shift-status").css("color", "white");
+            }
           });
           $("#shift-btn").click(function() {
               let key = "Shift";
@@ -203,6 +207,11 @@
               data: { key: key },
               success: function(response) {
                   $("#shift-status").text(snewStatus); // Update button text
+                  if (snewStatus === "ON") {
+                      $("#shift-status").css("color", "red");
+                  } else {
+                      $("#shift-status").css("color", "white");
+                  }
               },
               error: function(jqXHR, textStatus, errorThrown) {
                   console.error("Error sending request:", textStatus, errorThrown);
@@ -219,9 +228,13 @@
     <script>
         $(document).ready(function() {
           $.getJSON("/get_toggle_states", function(data) {
-            $("#shift-status").text(data.Shift ? "ON" : "OFF");
-            $("#control-status").text(data.Control ? "ON" : "OFF");
-            $("#alt-status").text(data.Alt ? "ON" : "OFF");
+            let controlStatus = data.Control ? "ON" : "OFF";
+            $("#control-status").text(controlStatus);
+            if (controlStatus === "ON") {
+                $("#control-status").css("color", "red");
+            } else {
+                $("#control-status").css("color", "white");
+            }
           });
           $("#control-btn").click(function() {
               let key = "Control";
@@ -234,6 +247,11 @@
               data: { key: key },
               success: function(response) {
                   $("#control-status").text(cnewStatus); // Update button text
+                  if (cnewStatus === "ON") {
+                      $("#control-status").css("color", "red");
+                  } else {
+                      $("#control-status").css("color", "white");
+                  }
               },
               error: function(jqXHR, textStatus, errorThrown) {
                   console.error("Error sending request:", textStatus, errorThrown);
@@ -252,9 +270,13 @@
     <script>
         $(document).ready(function() {
           $.getJSON("/get_toggle_states", function(data) {
-            $("#shift-status").text(data.Shift ? "ON" : "OFF");
-            $("#control-status").text(data.Control ? "ON" : "OFF");
-            $("#alt-status").text(data.Alt ? "ON" : "OFF");
+            let altStatus = data.Alt ? "ON" : "OFF";
+            $("#alt-status").text(altStatus);
+            if (altStatus === "ON") {
+                $("#alt-status").css("color", "red");
+            } else {
+                $("#alt-status").css("color", "white");
+            }
           });
           $("#alt-btn").click(function() {
               let key = "Alt";
@@ -267,6 +289,11 @@
               data: { key: key },
               success: function(response) {
                   $("#alt-status").text(anewStatus); // Update button text
+                  if (anewStatus === "ON") {
+                      $("#alt-status").css("color", "red");
+                  } else {
+                      $("#alt-status").css("color", "white");
+                  }
               },
               error: function(jqXHR, textStatus, errorThrown) {
                   console.error("Error sending request:", textStatus, errorThrown);
