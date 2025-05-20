@@ -6,10 +6,10 @@ import time
 from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = ""  # Replace with a strong secret key
+app.secret_key = "{replace with key}"  # Replace with a strong secret key
 
 # Hardcoded password
-PASSWORD = ""
+PASSWORD = "{application password here}"
 
 brightness = sbc.get_brightness()
 pyautogui.FAILSAFE = False
