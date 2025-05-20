@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #1d1d1d;
+    touch-action: manipulation;
+}
+h1 {
+    margin-bottom: 20px;
+    color: white;
+}
+button {
+    padding: 5px;
+    margin: 3px;
+    font-size: 17px;
+    margin-top: 5px;
+    background-color: #1E3A8A; /* Dark blue background */
+    color: #F0EDEE; /* Off-white text */
+    cursor: pointer;
+    transition: all 0.02s ease; /* Smooth transition for press effect */
+}
+
+button:active {
+    background-color: #374151; /* Darker background when active */
+    transform: translateY(1px); /* Make it look pressed by moving down */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset; /* Inset shadow for a pressed effect */
+}
+.tap-buttons-container button {
+    flex-grow: 1; /* Make each button take equal space */
+}
+.emoji-button {
+    width: 50px;           /* Fixed width for square buttons */
+    height: 50px;          /* Fixed height to make it square */
+    display: inline-flex;   /* Flexbox to center emoji */
+    align-items: center;    /* Center emoji vertically */
+    justify-content: center;/* Center emoji horizontally */
+    font-size: 25px;        /* Larger font size for the emoji */
+    padding: 0;            /* No padding needed for emoji button */
+}
+.text-button {
+    width: 120px;
+    height: 40px;
+    align-items: center;    /* Center emoji vertically */
+    justify-content: center;/* Center emoji horizontally */
+    background-color: #1E3A8A; /* Dark blue background */
+    color: #F0EDEE; /* Off-white text */
+}
+.keyboard-input {
+    margin-top: 10px;
+}
+.keyboard-input input {
+    width: 80%;
+    padding: 10px;
+    font-size: 18px;
+}
+input[type="text"] {
+    background-color: #3C3C3C; /* Slightly lighter gray background */
+    color: #F0EDEE; /* Off-white text color */
+    border: 2px solid #F0EDEE; /* Off-white outline */
+    padding: 10px;
+    font-size: 18px;
+    width: 80%;
+    border-radius: 5px; /* Optional: rounded corners */
+}
+
+input[type="text"]::placeholder {
+    color: #F0EDEE; /* Off-white placeholder text */
+}
+#touchpad {
+    width: 100vw - 20px;  /* Full viewport width */
+    height: 46vw;  /* 16:9 aspect ratio */
+    max-height: 80vh;  /* Limit height to 80% of viewport height */
+    border: 2px solid #ffffff;
+    border-radius: 15px;
+    background-color: #2c2c2c;  /* Slightly lighter than the background */
+    touch-action: none;
+    user-select: none;
+    position: relative;
+    box-sizing: border-box;  /* Include border in width/height calculations */
+    margin-top: 5px;
+}
