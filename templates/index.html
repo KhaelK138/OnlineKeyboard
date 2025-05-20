@@ -238,14 +238,14 @@
 
 <!-- Arrow buttons form -->
 
-<button class="emoji-button" type="button" id="volume-up-btn">🔊</button>
+<button class="emoji-button" type="button" id="volume-down-btn">🔈</button>
 <script>
     $(document).ready(function() {
-      $("#volume-up-btn").click(function() {
+      $("#volume-down-btn").click(function() {
         $.ajax({
-          url: "/volume_up",
+          url: "/volume_down",
           method: "POST",
-          data: { key: "volume-up" }, // Send key value as data
+          data: { key: "volume-down" }, // Send key value as data
           success: function(response) {
             // Handle successful response (optional)
           },
@@ -274,14 +274,14 @@
       });
     });
 </script>
-<button class="emoji-button" type="button" id="volume-down-btn">🔈</button>
+<button class="emoji-button" type="button" id="volume-up-btn">🔊</button>
 <script>
     $(document).ready(function() {
-      $("#volume-down-btn").click(function() {
+      $("#volume-up-btn").click(function() {
         $.ajax({
-          url: "/volume_down",
+          url: "/volume_up",
           method: "POST",
-          data: { key: "volume-down" }, // Send key value as data
+          data: { key: "volume-up" }, // Send key value as data
           success: function(response) {
             // Handle successful response (optional)
           },
@@ -292,6 +292,7 @@
       });
     });
 </script>
+
 <br>
 <button class="emoji-button" type="button" id="left-btn">⬅️</button>
 <script>
@@ -347,14 +348,14 @@
       });
     });
 </script><br>
-<button class="emoji-button" type="button" id="brightness-up-btn">🔆</button>
+<button class="emoji-button" type="button" id="brightness-down-btn">🔅</button>
 <script>
     $(document).ready(function() {
-      $("#brightness-up-btn").click(function() {
+      $("#brightness-down-btn").click(function() {
         $.ajax({
-          url: "/brightness_up",
+          url: "/brightness_down",
           method: "POST",
-          data: { key: "brightness-up" }, // Send key value as data
+          data: { key: "brightness-down" }, // Send key value as data
           success: function(response) {
             // Handle successful response (optional)
           },
@@ -383,14 +384,14 @@
       });
     });
 </script>
-<button class="emoji-button" type="button" id="brightness-down-btn">🔅</button>
+<button class="emoji-button" type="button" id="brightness-up-btn">🔆</button>
 <script>
     $(document).ready(function() {
-      $("#brightness-down-btn").click(function() {
+      $("#brightness-up-btn").click(function() {
         $.ajax({
-          url: "/brightness_down",
+          url: "/brightness_up",
           method: "POST",
-          data: { key: "brightness-down" }, // Send key value as data
+          data: { key: "brightness-up" }, // Send key value as data
           success: function(response) {
             // Handle successful response (optional)
           },
