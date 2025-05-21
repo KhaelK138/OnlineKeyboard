@@ -3,10 +3,12 @@ import pyautogui
 import keyboard
 import screen_brightness_control as sbc
 import time
+import os
 from functools import wraps
 
+
 app = Flask(__name__)
-app.secret_key = "{replace with key}"  # Replace with a strong secret key
+app.secret_key = os.urandom(12)
 
 # Hardcoded password
 PASSWORD = "{application password here}"
