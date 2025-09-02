@@ -405,7 +405,7 @@
 
 <br>
 
-<div id="touchpad"></div>
+<div id="touchpad" style="max-width: 1000px; max-height: 500px; margin: 0 auto;"></div>
 </div>
 
 <script>
@@ -582,7 +582,19 @@
     });
 </script>
 
+<div id="screen-container" style="display:none;">
+  <img id="screen" src="/stream" style="width:100%" />
+</div>
 
+<script>
+fetch("/features")
+  .then(res => res.json())
+  .then(data => {
+    if (data.streaming) {
+      document.getElementById("screen-container").style.display = "block";
+    }
+  });
+</script>
 
 </body>
 </html>

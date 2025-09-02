@@ -4,6 +4,11 @@ import keyboard
 import screen_brightness_control as sbc
 import time
 import os
+import mss
+import io
+import argparse
+from flask import Response
+from PIL import Image, ImageDraw
 from functools import wraps
 
 
@@ -65,6 +70,40 @@ def move_mouse():
     pyautogui.moveRel(dx_scaled, dy_scaled)
     
     return jsonify({"status": "success"})
+
+def start_stream():
+    @app.route('/stream')
+    @login_required
+    def stream():
+        def generate():
+            sct = mss.mss()
+            while True:
+                # Capture screen
+                sct_img = sct.grab(sct.monitors[0])
+                img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
+
+                # Get cursor position
+                x, y = pyautogui.position()
+
+                # Draw simple cursor overlay (red circle)
+                draw = ImageDraw.Draw(img)
+                r = 5
+                draw.ellipse((x-r, y-r, x+r, y+r), fill="red", outline="black")
+
+                # Encode to JPEG
+                buf = io.BytesIO()
+                img.save(buf, format="JPEG", quality=50)
+                frame = buf.getvalue()
+
+                # Stream as MJPEG
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        return Response(generate(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+@app.route('/features')
+@login_required
+def features():
+    return jsonify({"streaming": args.stream})
 
 @app.route('/click_mouse', methods=['POST'])
 @login_required
@@ -165,4 +204,11 @@ def submit_text():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--stream", action="store_true",
+                        help="Enable MJPEG streaming (/stream)")
+    args = parser.parse_args()
+
+    if args.stream:
+        start_stream()
     app.run(host='0.0.0.0', port=1338)
