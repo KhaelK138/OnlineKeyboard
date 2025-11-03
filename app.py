@@ -1,4 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Response
+from PIL import Image, ImageDraw
+from functools import wraps
+import tempfile
+import stat
 import pyautogui
 import keyboard
 import screen_brightness_control as sbc
@@ -7,25 +13,35 @@ import os
 import mss
 import io
 import argparse
-from flask import Response
-from PIL import Image, ImageDraw
-from functools import wraps
-
 
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
 
 CONFIG_FILE = 'config.txt'
 
-def get_password():
-    return open(CONFIG_FILE).read().strip().split('=')[1]
+def get_hash():
+    try:
+        with open(CONFIG_FILE, 'r') as f:
+            return f.read().strip().split('=',1)[1]
+    except FileNotFoundError:
+        return ''
 
 def set_password(new_pass):
-    with open(CONFIG_FILE, 'w') as f:
-        f.write(f"app_pass={new_pass}\n")
+    hashed = generate_password_hash(new_pass)
+    # atomic write
+    fd, tmp = tempfile.mkstemp(dir='.', prefix='cfg-')
+    with os.fdopen(fd, 'w') as f:
+        f.write(f"app_pass={hashed}\n")
+    os.replace(tmp, CONFIG_FILE)
 
-def is_default_password(password):
-    return get_password() == "changeme" and password == "changeme"
+def verify_password(candidate):
+    h = get_hash()
+    if not h:
+        return False
+    # case for default password
+    if h == 'changeme' and candidate == 'changeme':
+        return True
+    return check_password_hash(h, candidate)
 
 brightness = sbc.get_brightness()
 pyautogui.FAILSAFE = False
@@ -60,12 +76,11 @@ def login():
         if not password:
             return render_template('login.html')
         # Force password change if default
-        if is_default_password(password):
-            return redirect(url_for('change_pass'))
-        
-        if password == get_password():
-            session['auth_token'] = 'authenticated'  # Set a session token
-            return redirect(url_for('home'))  # Redirect to the main page after login
+        if verify_password(password):
+            if password == "changeme":
+                return redirect(url_for('change_pass'))
+            session['auth_token'] = 'authenticated'  
+            return redirect(url_for('home'))  
         else:
             return render_template('login.html')  
     return render_template('login.html')  # Serve the login page template
@@ -83,7 +98,7 @@ def change_pass():
             return render_template('change_pass.html', error="All fields are required")
 
         # verify current password
-        if current != get_password():
+        if not verify_password(current):
             return render_template('change_pass.html', error="Incorrect current password")
 
         # prevent reusing default
@@ -258,4 +273,4 @@ if __name__ == '__main__':
 
     if args.stream:
         start_stream()
-    app.run(host='0.0.0.0', port=1338)
+    app.run(host='0.0.0.0', port=1339)
