@@ -258,4 +258,4 @@ if __name__ == '__main__':
 
     if args.stream:
         start_stream()
-    app.run(host='0.0.0.0', port=1339)
+    app.run(host='0.0.0.0', port=1338)
