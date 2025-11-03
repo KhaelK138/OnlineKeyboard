@@ -543,12 +543,9 @@
                   $("#submit-status").text("Error submitting text").fadeIn().delay(1000).fadeOut(); // Show error message
               }
           });
-      });
-
-      // Clear text input when "Clear Text" button is clicked
-      $("#clear-text-btn").click(function() {
           $("#text-input").val(""); // Clear the input field
       });
+
   });
 </script>
 
@@ -556,7 +553,6 @@
   <input type="text" id="text-input" placeholder="Type here..." autocomplete="off" autocorrect="off" autocapitalize="off">
   <br>
   <button class="text-button" type="button" id="submit-text-btn">Submit Text</button>
-  <button class="text-button" type="button" id="clear-text-btn">Clear Text</button>
   <span id="submit-status" style="color: white;"></span>
 </div>
 

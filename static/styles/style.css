@@ -65,6 +65,20 @@ input[type="text"] {
 input[type="text"]::placeholder {
     color: #F0EDEE; /* Off-white placeholder text */
 }
+input[type="password"] {
+    background-color: #3C3C3C;
+    color: #F0EDEE;
+    border: 2px solid #F0EDEE;
+    padding: 6px 6px;        /* was 10px */
+    font-size: 15px;         /* was 18px */
+    width: 70%;              /* narrower width */
+    border-radius: 5px;
+    box-sizing: border-box;  /* keeps consistent sizing */
+}
+
+input[type="password"]::placeholder {
+    color: #979696;
+}
 #touchpad {
     width: 100vw - 20px;  /* Full viewport width */
     height: 46vw;  /* 16:9 aspect ratio */

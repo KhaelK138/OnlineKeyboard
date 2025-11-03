@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/styles/style.css">
 </head>
 <body>
+    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
     <form method="POST" action="/login">
         <input type="password" name="password" id="password" required>
         <button type="submit">Login</button>

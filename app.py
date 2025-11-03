@@ -15,8 +15,17 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
 
-# Hardcoded password
-PASSWORD = "{application password here}"
+CONFIG_FILE = 'config.txt'
+
+def get_password():
+    return open(CONFIG_FILE).read().strip().split('=')[1]
+
+def set_password(new_pass):
+    with open(CONFIG_FILE, 'w') as f:
+        f.write(f"app_pass={new_pass}\n")
+
+def is_default_password(password):
+    return get_password() == "changeme" and password == "changeme"
 
 brightness = sbc.get_brightness()
 pyautogui.FAILSAFE = False
@@ -42,17 +51,55 @@ def login_required(f):
 def home():
     return render_template('index.html', toggle_keys=toggle_keys)
 
-# Endpoint to serve login page
+# Login Functionality
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         password = request.form['password']
-        if password == PASSWORD:
+        if not password:
+            return render_template('login.html')
+        # Force password change if default
+        if is_default_password(password):
+            return redirect(url_for('change_pass'))
+        
+        if password == get_password():
             session['auth_token'] = 'authenticated'  # Set a session token
             return redirect(url_for('home'))  # Redirect to the main page after login
         else:
-            return "Invalid password", 401  # Return an error for invalid password
+            return render_template('login.html')  
     return render_template('login.html')  # Serve the login page template
+
+@app.route('/change_pass', methods=['GET', 'POST'])
+def change_pass():
+    """
+    Force password change if it's default, but require knowing the current password first.
+    """
+    if request.method == 'POST':
+        current = request.form['current_password']
+        new_pass = request.form['new_password']
+        confirm_pass = request.form['confirm_password']
+        if not current or not new_pass or not confirm_pass:
+            return render_template('change_pass.html', error="All fields are required")
+
+        # verify current password
+        if current != get_password():
+            return render_template('change_pass.html', error="Incorrect current password")
+
+        # prevent reusing default
+        if new_pass == "changeme":
+            return render_template('change_pass.html', error="Password cannot be default password")
+
+        # confirm match
+        if new_pass != confirm_pass:
+            return render_template('change_pass.html', error="Passwords do not match")
+
+        set_password(new_pass)
+        return redirect(url_for('login'))
+
+    return render_template('change_pass.html')
+
+# App Functionality
 
 @app.route('/move_mouse', methods=['POST'])
 @login_required
@@ -211,4 +258,4 @@ if __name__ == '__main__':
 
     if args.stream:
         start_stream()
-    app.run(host='0.0.0.0', port=1338)
+    app.run(host='0.0.0.0', port=1339)

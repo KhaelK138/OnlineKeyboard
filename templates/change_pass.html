@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Remote Control</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/styles/style.css">
+    </head>
+    <body>
+        {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+        <form method="POST">
+            <input type="password" id="text-input" name="current_password" placeholder="Current password" required autocomplete="off" autocorrect="off" autocapitalize="off"><br><br>
+            <input type="password" id="text-input" name="new_password" placeholder="New password" required autocomplete="off" autocorrect="off" autocapitalize="off"><br><br>
+            <input type="password" id="text-input" name="confirm_password" placeholder="Confirm password" required autocomplete="off" autocorrect="off" autocapitalize="off"><br><br>
+            <button type="submit">Change Password</button>
+        </form>
+    </body>
+</html>
