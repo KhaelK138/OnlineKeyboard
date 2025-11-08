@@ -48,7 +48,11 @@ def verify_password(candidate):
         return True
     return check_password_hash(h, candidate)
 
-brightness = sbc.get_brightness()
+try:
+    brightness = sbc.get_brightness()
+except Exception as e:
+    brightness = None
+    print(f"Could not get brightness: {e}")
 pyautogui.FAILSAFE = False
 
 
