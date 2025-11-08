@@ -19,6 +19,11 @@ app.secret_key = os.urandom(12)
 
 CONFIG_FILE = 'config.txt'
 
+# make sure config file exists
+if not os.path.exists(CONFIG_FILE):
+    with open(CONFIG_FILE, 'w') as f:
+        f.write('app_pass=changeme\n')
+
 def get_hash():
     try:
         with open(CONFIG_FILE, 'r') as f:
