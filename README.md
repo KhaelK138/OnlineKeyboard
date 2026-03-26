@@ -1,4 +1,4 @@
-# OnlineKeyboard
+# PCRemoteControl
 A Flask-based keyboard webapp, used for controlling one's computer similar to a remote control. Simply run the app with python, and then (on the same network) navigate to your IP on port 1338.
 
 Default password is `changeme`. You'll be forced to change it before you can use the app.
